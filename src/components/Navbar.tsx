@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Compass } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import clsx from 'clsx';
 import LoginModal from './LoginModal';
 
@@ -25,7 +25,7 @@ const Navbar = () => {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <Link to="/" className="flex items-center">
-                <img src="public\images\travelick (1)_pg3.png" alt="Logo" className="h-8 w-auto" />
+                <img src="src/assests/images/travelick (1)_pg3.png" alt="Travelick" className="h-12 w-auto" />
                 <span className="ml-2 text-xl font-bold text-secondary">Travelick</span>
               </Link>
             </div>

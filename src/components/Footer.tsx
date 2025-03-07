@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, Facebook, Twitter, Instagram, Pointer as Pinterest } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Pointer as Pinterest } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -9,14 +9,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div>
-            {/* <Link to="/" className="flex items-center">
-              <Compass className="h-8 w-8 text-primary" />
-              <span className="ml-2 text-xl font-bold">Travelite</span>
-            </Link> */}
-             <Link to="/" className="flex items-center">
-                <img src="public\images\travelick (1)_pg3.png" alt="Logo" className="h-8 w-auto" />
-                <span className="ml-2 text-xl font-bold">Travelick</span>
-              </Link>
+            <Link to="/" className="flex items-center">
+              <img src="/src/assests/images/travelick (1)_pg3.png" alt="Travelick" className="h-12 w-auto" />
+              <span className="ml-2 text-xl font-bold">Travelick</span>
+            </Link>
             <p className="mt-4 text-gray-400">
               Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat.
             </p>
@@ -68,7 +64,7 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <div className="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400">Copyright ©2024 Travelite. All Rights Reserved</p>
+          <p className="text-gray-400">Copyright ©2024 Travelick. All Rights Reserved</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-primary"><Facebook size={20} /></a>
             <a href="#" className="text-gray-400 hover:text-primary"><Twitter size={20} /></a>
