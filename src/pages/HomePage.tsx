@@ -8,28 +8,12 @@ import 'swiper/css/pagination';
 
 const slides = [
   {
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-    location: "Argentina",
-    title: "Hiking Tour",
-    description: "Find your perfect hiking adventure with our expert guides and breathtaking destinations.",
+    image: "/src/assests/images/B1-HUNZA.jpg",
+    location: "Hunza Valley",
+    title: "Explore the World in 360°, one virtual step at a time.",
+    description: "From Pakistan’s breathtaking landscapes to global wonders, Travelick brings the world to your fingertips.",
     rating: 4.5,
     reviews: 245
-  },
-  {
-    image: "https://images.unsplash.com/photo-1533240332313-0db49b459ad6",
-    location: "Switzerland",
-    title: "Mountain Trek",
-    description: "Experience the majesty of the Swiss Alps with our expert mountain guides.",
-    rating: 4.8,
-    reviews: 312
-  },
-  {
-    image: "https://images.unsplash.com/photo-1682687982501-1e58ab814714",
-    location: "Norway",
-    title: "Fjord Adventure",
-    description: "Discover the stunning Norwegian fjords on an unforgettable journey.",
-    rating: 4.7,
-    reviews: 189
   }
 ];
 
@@ -37,131 +21,92 @@ const HomePage = () => {
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 4;
-      const y = (e.clientY / window.innerHeight - 0.5) * 4;
-      setTranslate({ x, y });
+    const handleMouseMove = (event: MouseEvent) => {
+      const { clientX, clientY } = event;
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      
+      const moveX = (clientX - centerX) * 0.02; // Adjust speed
+      const moveY = (clientY - centerY) * 0.02;
+      
+      setTranslate({ x: moveX, y: moveY });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
+
+  // useEffect(() => {
+  //   const handleMouseMove = (e: MouseEvent) => {
+  //     const x = (e.clientX / window.innerWidth - 0.5) * 4;
+  //     const y = (e.clientY / window.innerHeight - 0.5) * 4;
+  //     setTranslate({ x, y });
+  //   };
+
+  //   window.addEventListener('mousemove', handleMouseMove);
+  //   return () => window.removeEventListener('mousemove', handleMouseMove);
+  // }, []);
 
   return (
     <div>
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 5000 }}
-          loop={true}
-          className="h-full"
-        >
-          {slides.map((slide, index) => (
-            <SwiperSlide key={index}>
-              <div className="relative h-full">
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-300"
-                  style={{ 
-                    backgroundImage: `url(${slide.image})`,
-                    transform: `translate3d(${translate.x}%, ${translate.y}%, 0px)`
-                  }}
-                >
-                  <div className="absolute inset-0 bg-black/50"></div>
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 5000 }}
+        loop={true}
+        className="h-full"
+      >
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative h-full">
+              <div 
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-300"
+                style={{ 
+                  backgroundImage: `url(${slide.image})`,
+                  transform: `translate(${translate.x}px, ${translate.y}px)`
+                }}
+              >
+                <div className="absolute inset-0 bg-black/50"></div>
+              </div>
+              <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col justify-center h-full text-white">
+                  <span className="inline-block text-primary border-b-2 border-primary w-24 mb-4">
+                    {slide.location}
+                  </span>
+                  <h1 className="text-6xl font-bold mb-6">{slide.title}</h1>
+                  <p className="text-xl mb-8 max-w-2xl">{slide.description}</p>
+                  <button className="btn-primary w-fit">Explore →</button>
                 </div>
-                <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="flex flex-col justify-center h-full text-white">
-                    <span className="inline-block text-primary border-b-2 border-primary w-24 mb-4">
-                      {slide.location}
-                    </span>
-                    <h1 className="text-6xl font-bold mb-6">{slide.title}</h1>
-                    <p className="text-xl mb-8 max-w-2xl">{slide.description}</p>
-                    <div className="flex items-center gap-6 mb-8">
-                      <div className="flex items-center">
-                        <div className="flex text-yellow-400">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              size={20}
-                              fill={i < Math.floor(slide.rating) ? "currentColor" : "none"}
-                            />
-                          ))}
-                        </div>
-                        <span className="ml-2">{slide.rating}</span>
-                      </div>
-                      <span>({slide.reviews} Reviews)</span>
-                    </div>
-                    <button className="btn-primary w-fit">Explore →</button>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        {/* Search Form */}
-        <div className="absolute bottom-0 left-0 right-0 bg-black/30 backdrop-blur-sm py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-white/10 p-4 rounded-lg">
-                <label className="block text-white text-sm mb-2">Location</label>
-                <input
-                  type="text"
-                  placeholder="Where are you going?"
-                  className="w-full bg-transparent border border-white/30 rounded px-3 py-2 text-white placeholder-white/50"
-                />
-              </div>
-              <div className="bg-white/10 p-4 rounded-lg">
-                <label className="block text-white text-sm mb-2">Check In</label>
-                <input
-                  type="date"
-                  className="w-full bg-transparent border border-white/30 rounded px-3 py-2 text-white"
-                />
-              </div>
-              <div className="bg-white/10 p-4 rounded-lg">
-                <label className="block text-white text-sm mb-2">Check Out</label>
-                <input
-                  type="date"
-                  className="w-full bg-transparent border border-white/30 rounded px-3 py-2 text-white"
-                />
-              </div>
-              <div className="bg-white/10 p-4 rounded-lg">
-                <label className="block text-white text-sm mb-2">Guests</label>
-                <select className="w-full bg-transparent border border-white/30 rounded px-3 py-2 text-white">
-                  <option value="1">1 Guest</option>
-                  <option value="2">2 Guests</option>
-                  <option value="3">3 Guests</option>
-                  <option value="4">4+ Guests</option>
-                </select>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
       {/* Top Destinations Section */}
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="section-subtitle">DISCOVER TOP DESTINATION</span>
           <h2 className="section-title">Popular Destinations</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             {[
               {
-                image: "https://images.unsplash.com/photo-1589308078059-be1415eab4c3",
-                title: "New Zealand",
+                image: "/src/assests/images/hunza.jpg",
+                title: "Hunza Valley",
                 reviews: "1.5k Reviews"
               },
               {
-                image: "https://images.unsplash.com/photo-1502085671122-2d218cd434e6",
-                title: "United Kingdom",
+                image: "/src/assests/images/Karachi-Pakistan.webp",
+                title: "Karachi",
                 reviews: "2k Reviews"
               },
               {
-                image: "https://images.unsplash.com/photo-1512100356356-de1b84283e18",
-                title: "Switzerland",
+                image: "/src/assests/images/Islamabad.jpg",
+                title: "Islamabad",
                 reviews: "1.2k Reviews"
               }
             ].map((destination, index) => (
@@ -200,19 +145,24 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                icon: Shield,
-                title: "Safety First Always",
-                description: "Your safety is our top priority on every adventure."
+                icon: Monitor,
+                title: "360° Virtual Tours",
+                description: "Immersive virtual experiences of Pakistan's finest locations."
+              },
+              {
+                icon: Globe,
+                title: "High-Quality Footage",
+                description: "Crystal clear 4K virtual tours with authentic sounds."
               },
               {
                 icon: Users,
-                title: "Expert Tour Guides",
-                description: "Experienced guides to enhance your journey."
+                title: "Virtual Guide",
+                description: "AI-powered virtual guide explaining historical significance."
               },
               {
-                icon: Clock,
-                title: "24/7 Support",
-                description: "Round-the-clock assistance for your peace of mind."
+                icon: Globe,
+                title: "High-Quality Footage",
+                description: "Crystal clear 4K virtual tours with authentic sounds."
               }
             ].map((feature, index) => (
               <div key={index} className="text-center">
@@ -229,29 +179,29 @@ const HomePage = () => {
 
       {/* Popular Tours Section */}
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="section-subtitle">POPULAR TOURS</span>
           <h2 className="section-title">Most Popular Adventure Tours</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             {[
               {
-                image: "https://images.unsplash.com/photo-1533240332313-0db49b459ad6",
-                title: "Mountain Hiking Tour",
-                location: "Switzerland Alps",
-                price: "$299"
+                image: "/src/assests/images/badshahi.jpg",
+                title: "Badshahi Mosque",
+                location: "Lahore, Pakistan",
+                experience: "360° Tour"
               },
               {
-                image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4",
-                title: "Kayaking Adventure",
-                location: "Norway Fjords",
-                price: "$199"
+                image: "/src/assests/images/Deosai-plains.jpg",
+                title: "Deosai Plains",
+                location: "Skardu, Pakistan",
+                experience: "Virtual Trek"
               },
               {
-                image: "https://images.unsplash.com/photo-1682687982501-1e58ab814714",
-                title: "Desert Safari",
-                location: "Dubai",
-                price: "$399"
+                image: "/src/assests/images/R.jpg",
+                title: "Faisal Mosque",
+                location: "Islamabad, Pakistan",
+                experience: "Virtual Visit"
               }
             ].map((tour, index) => (
               <div key={index} className="group bg-white rounded-lg overflow-hidden shadow-lg">
@@ -261,14 +211,14 @@ const HomePage = () => {
                     alt={tour.title}
                     className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded">
-                    {tour.price}
+                  <div className="absolute top-4 right-4 text-white px-3 py-1 rounded">
+                    
                   </div>
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2">{tour.title}</h3>
                   <p className="text-gray-600">{tour.location}</p>
-                  <button className="mt-4 w-full btn-primary">Book Now</button>
+                  <button className="mt-4 w-full btn-primary">Experience Now</button>
                 </div>
               </div>
             ))}
@@ -278,10 +228,10 @@ const HomePage = () => {
 
       {/* What We Serve Section */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="section-subtitle">WHAT WE SERVE</span>
           <h2 className="section-title">Top Values For You</h2>
-          <p className="text-gray-600 max-w-2xl mb-12">
+          <p className="text-gray-600 mb-12">
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.
           </p>
 
@@ -317,10 +267,10 @@ const HomePage = () => {
 
       {/* Tours Guide Section */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className=" text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="section-subtitle">TOURS GUIDE</span>
           <h2 className="section-title">Our Travel Guide</h2>
-          <p className="text-gray-600 max-w-2xl mb-12">
+          <p className="text-gray-600 mb-12">
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.
           </p>
 
@@ -400,10 +350,10 @@ const HomePage = () => {
 
       {/* Testimonial Section */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="section-subtitle">TESTIMONIAL</span>
           <h2 className="section-title">What The People Thinks About Us</h2>
-          <p className="text-gray-600 max-w-2xl mb-12">
+          <p className="text-gray-600 mb-12">
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.
           </p>
 
@@ -469,10 +419,10 @@ const HomePage = () => {
 
       {/* Blog Section */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="section-subtitle">OUR BLOG</span>
           <h2 className="section-title">Get the Latest News</h2>
-          <p className="text-gray-600 max-w-2xl mb-12">
+          <p className="text-gray-600 mb-12">
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.
           </p>
 

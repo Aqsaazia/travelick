@@ -59,19 +59,19 @@ const AboutPage = () => {
               </div>
             </div>
             
-            <div className="relative">
+            <div className="relative bg-white p-6 rounded-lg shadow-lg">
               <img 
-                src="https://images.unsplash.com/photo-1527631746610-bca00a040d60"
+                src="https://images.unsplash.com/photo-1501555088652-021faa106b9b"
                 alt="Tour group"
-                className="rounded-lg shadow-xl"
+                className="rounded"
               />
-              <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-lg">
+              {/* <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-lg">
                 <img 
                   src="https://images.unsplash.com/photo-1501555088652-021faa106b9b"
                   alt="Adventure"
                   className="rounded"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
