@@ -8,8 +8,8 @@ import 'swiper/css/pagination';
 
 const slides = [
   {
-    image: "/src/assests/images/B1-HUNZA.jpg",
-    location: "Hunza Valley",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
+    location: "Islamabad",
     title: "Explore the World in 360°, one virtual step at a time.",
     description: "From Pakistan’s breathtaking landscapes to global wonders, Travelick brings the world to your fingertips.",
     rating: 4.5,
@@ -18,22 +18,18 @@ const slides = [
 ];
 
 const HomePage = () => {
+  // Add this state and useEffect for mouse movement
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      const { clientX, clientY } = event;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      
-      const moveX = (clientX - centerX) * 0.02; // Adjust speed
-      const moveY = (clientY - centerY) * 0.02;
-      
-      setTranslate({ x: moveX, y: moveY });
+    const handleMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 40; // Adjust multiplier for sensitivity
+      const y = (e.clientY / window.innerHeight - 0.5) * 40; // Adjust multiplier for sensitivity
+      setTranslate({ x, y });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   // useEffect(() => {
@@ -51,41 +47,100 @@ const HomePage = () => {
     <div>
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        navigation
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
-        loop={true}
-        className="h-full"
-      >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative h-full">
-              <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-300"
-                style={{ 
-                  backgroundImage: `url(${slide.image})`,
-                  transform: `translate(${translate.x}px, ${translate.y}px)`
-                }}
-              >
-                <div className="absolute inset-0 bg-black/50"></div>
-              </div>
-              <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col justify-center h-full text-white">
-                  <span className="inline-block text-primary border-b-2 border-primary w-24 mb-4">
-                    {slide.location}
-                  </span>
-                  <h1 className="text-6xl font-bold mb-6">{slide.title}</h1>
-                  <p className="text-xl mb-8 max-w-2xl">{slide.description}</p>
-                  <button className="btn-primary w-fit">Explore →</button>
+  <Swiper
+    modules={[Navigation, Pagination, Autoplay]}
+    navigation
+    pagination={{ clickable: true }}
+    autoplay={{ delay: 5000 }}
+    loop={true}
+    className="h-full"
+  >
+    {slides.map((slide, index) => (
+      <SwiperSlide key={index}>
+        <div className="relative h-full">
+          {/* 360-degree model with mouse movement effect */}
+          <div className="absolute inset-0 overflow-hidden">
+            <iframe
+              src="https://skybox.blockadelabs.com/e/a0aecf5e2fc54cf6ef6ef7948b239cbf"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allow="fullscreen"
+              className="absolute inset-0 w-full h-full object-cover transform-gpu"
+             
+            />
+          </div>
+          {/* Semi-transparent overlay for better text visibility */}
+          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col justify-center h-full text-white">
+              <span className="inline-block text-primary border-b-2 border-primary w-24 mb-4">
+                {slide.location}
+              </span>
+              <h1 className="text-6xl font-bold mb-6">{slide.title}</h1>
+              <p className="text-xl mb-8 max-w-2xl">{slide.description}</p>
+              <div className="flex items-center gap-6 mb-8">
+                <div className="flex items-center">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={20}
+                        fill={i < Math.floor(slide.rating) ? "currentColor" : "none"}
+                      />
+                    ))}
+                  </div>
+                  <span className="ml-2">{slide.rating}</span>
                 </div>
+                <span>({slide.reviews} Reviews)</span>
               </div>
+              <button className="btn-primary w-fit">Explore →</button>
             </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </section>
+          </div>
+        </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
+
+  {/* Search Form */}
+  <div className="absolute bottom-0 left-0 right-0 bg-black/30 backdrop-blur-sm py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white/10 p-4 rounded-lg">
+          <label className="block text-white text-sm mb-2">Location</label>
+          <input
+            type="text"
+            placeholder="Where are you going?"
+            className="w-full bg-transparent border border-white/30 rounded px-3 py-2 text-white placeholder-white/50"
+          />
+        </div>
+        <div className="bg-white/10 p-4 rounded-lg">
+          <label className="block text-white text-sm mb-2">Check In</label>
+          <input
+            type="date"
+            className="w-full bg-transparent border border-white/30 rounded px-3 py-2 text-white"
+          />
+        </div>
+        <div className="bg-white/10 p-4 rounded-lg">
+          <label className="block text-white text-sm mb-2">Check Out</label>
+          <input
+            type="date"
+            className="w-full bg-transparent border border-white/30 rounded px-3 py-2 text-white"
+          />
+        </div>
+        <div className="bg-white/10 p-4 rounded-lg">
+          <label className="block text-white text-sm mb-2">Guests</label>
+          <select className="w-full bg-transparent border border-white/30 rounded px-3 py-2 text-white">
+            <option value="1">1 Guest</option>
+            <option value="2">2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4+ Guests</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
       {/* Top Destinations Section */}
       <section className="py-16">
         <div className="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
